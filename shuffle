@@ -1,0 +1,70 @@
+#!/usr/bin/python3
+
+import random
+
+class Possibilities:
+    def __init__(self, *books):
+        self.books = books
+
+    def enum(self):
+        return [exercise for book in self.books for exercise in book.enum()]
+
+    def shuffle(self):
+        exercises = self.enum()
+        random.shuffle(exercises)
+        return exercises
+
+class Book:
+    def __init__(self, name, *sections):
+        self.name = name
+        self.sections = sections
+
+    def enum(self):
+        return ['{}, {}'.format(self.name, exercise) for section in self.sections for exercise in section.enum()]
+
+class Section:
+    def __init__(self, name, page, exercises):
+        self.name = name
+        self.page = page
+        self.exercises = exercises
+
+    def enum(self):
+        lst = ['Read Section {}'.format(self.name)]
+        lst.extend(['Section {}, Exercise {} (page {})'.format(self.name, exercise, self.page) for exercise in range(1, self.exercises + 1)])
+        return lst
+
+class Lesson:
+    def __init__(self, name, page, exercises):
+        self.name = name
+        self.page = page
+        self.exercises = exercises
+
+    def enum(self):
+        lst = ['Lesson {}, Exercise {} (page {})'.format(self.name, exercise, self.page) for exercise in range(1, self.exercises + 1)]
+        return lst
+
+for p in Possibilities(
+            Book(
+                "How to Prove It",
+                Section(1.1, page= 13, exercises= 7),
+                Section(1.2, page= 24, exercises=18),
+                Section(1.3, page= 33, exercises= 8),
+                Section(1.4, page= 41, exercises=15),
+                Section(1.5, page= 53, exercises=10),
+                Section(2.1, page= 63, exercises= 9),
+                Section(2.2, page= 72, exercises=12),
+                Section(2.3, page= 81, exercises=15),
+                Section(3.1, page= 93, exercises=16),
+                Section(3.2, page=106, exercises=17),
+                Section(3.3, page=121, exercises=26),
+                Section(3.4, page=133, exercises=26),
+                Section(3.5, page=143, exercises=31),
+                Section(3.6, page=153, exercises=12),
+                Section(3.7, page=161, exercises= 9),
+            ),
+            Book(
+                "Diagramming Step by Step",
+                Lesson(1, page=  9, exercises=10),
+            ),
+        ).shuffle():
+    print(p)

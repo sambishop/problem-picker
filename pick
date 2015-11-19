@@ -1,0 +1,5 @@
+#!/bin/bash
+
+choice=$(./shuffle | grep -v -x -f done | head -n 1)
+echo $choice >> done
+echo $choice
